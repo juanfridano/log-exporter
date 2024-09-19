@@ -1,0 +1,6 @@
+.terraform/
+.terraform*
+
+*.txt
+*.tfplan
+*-key.json
