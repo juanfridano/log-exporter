@@ -19,7 +19,7 @@ resource "google_storage_bucket" "log_bucket" {
 
 # Pub/Sub Topic
 resource "google_pubsub_topic" "log_topic" {
-  name = "log-export-topic"
+  name = var.pubsub_topic_name
 }
 
 # Logging Sink for exporting logs to BigQuery
@@ -48,11 +48,16 @@ resource "google_logging_project_sink" "log_sink_pubsub" {
 }
 
 # Grant Logging Service Account Permissions for BigQuery, Cloud Storage, and Pub/Sub
+resource "google_service_account" "logging_sa" {
+  account_id   = "logging-sa"
+  display_name = "Logging Service Account"
+}
+
 resource "google_project_iam_binding" "bigquery_log_writer" {
   project = var.project
   role    = "roles/bigquery.dataEditor"
   members = [
-    "serviceAccount:${google_logging_project_sink.log_sink_bigquery.writer_identity}",
+    "serviceAccount:${google_service_account.logging_sa.email}",
   ]
 }
 
@@ -60,7 +65,7 @@ resource "google_project_iam_binding" "storage_log_writer" {
   project = var.project
   role    = "roles/storage.objectCreator"
   members = [
-    "serviceAccount:${google_logging_project_sink.log_sink_storage.writer_identity}",
+    "serviceAccount:${google_service_account.logging_sa.email}",
   ]
 }
 
@@ -68,6 +73,6 @@ resource "google_project_iam_binding" "pubsub_log_writer" {
   project = var.project
   role    = "roles/pubsub.publisher"
   members = [
-    "serviceAccount:${google_logging_project_sink.log_sink_pubsub.writer_identity}",
+    "serviceAccount:${google_service_account.logging_sa.email}",
   ]
 }
