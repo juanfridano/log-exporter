@@ -5,4 +5,4 @@ pubsub_topic_name = "log-export-topic"
 bucket_name = "log-export-bucket_123"
 dataset_name = "log_export_dataset"
 
-logs_filter = "resource.type = gce_instance"
+logs_filter = "resource.type= cloud_run_revision"
