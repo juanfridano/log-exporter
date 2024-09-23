@@ -32,3 +32,7 @@ variable "logs_filter" {
   type        = string
   description = "Filter for cloud logs"
 }
+
+variable "service_account" {
+  description = "Service account name"
+}

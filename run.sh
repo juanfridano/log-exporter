@@ -28,6 +28,11 @@ function authenticate() {
         export_creds
         gcloud auth activate-service-account --key-file=$key_file
         gcloud config set project $project_name
+        gcloud services enable  logging.googleapis.com
+        gcloud services enable  bigquery.googleapis.com
+        gcloud services enable  storage.googleapis.com
+        gcloud services enable  pubsub.googleapis.com
+        gcloud services enable  iam.googleapis.com
     fi
 }
 
