@@ -44,3 +44,25 @@ resource "google_monitoring_notification_channel" "webhook_channel" {
     url = "${google_cloudfunctions_function.function.https_trigger_url}"
   }
 }
+
+resource "google_monitoring_alert_policy" "my_cf_alert_policy" {
+  display_name = "errors_in_logs"
+  severity     = "ERROR"
+  notification_channels = [
+    google_monitoring_notification_channel.webhook_channel.name
+  ]
+  combiner = "OR"
+  conditions {
+    display_name = "send_alert_when_severity=ERROR"
+    condition_matched_log {
+      filter = "severity=\"ERROR\""
+    }
+  }
+
+  alert_strategy {
+    auto_close = "604800s"
+    notification_rate_limit {
+      period = "300s"
+    }
+  }
+}
