@@ -36,3 +36,11 @@ variable "logs_filter" {
 variable "service_account" {
   description = "Service account name"
 }
+
+variable "cloud_function_bucket_name" {
+  description = "Bucket to store cloud function code"
+}
+
+variable "teams_webhook_url" {
+  description = "Webhook for Teams Channel to forward alerts"
+}

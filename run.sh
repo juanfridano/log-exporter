@@ -1,3 +1,4 @@
+#!/bin/bash
 project_name="log-exporter-436111"
 key_file="tf-service-key.json"
 plan_filename="plan.tfplan"
@@ -28,11 +29,14 @@ function authenticate() {
         export_creds
         gcloud auth activate-service-account --key-file=$key_file
         gcloud config set project $project_name
-        gcloud services enable  logging.googleapis.com
-        gcloud services enable  bigquery.googleapis.com
-        gcloud services enable  storage.googleapis.com
-        gcloud services enable  pubsub.googleapis.com
-        gcloud services enable  iam.googleapis.com
+        gcloud services enable logging.googleapis.com
+        gcloud services enable bigquery.googleapis.com
+        gcloud services enable storage.googleapis.com
+        gcloud services enable pubsub.googleapis.com
+        gcloud services enable iam.googleapis.com
+        gcloud services enable cloudfunctions.googleapis.com
+        gcloud services enable cloudbuild.googleapis.com
+        gcloud services enable monitoring.googleapis.com
     fi
 }
 

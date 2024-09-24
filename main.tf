@@ -44,35 +44,21 @@ resource "google_logging_project_sink" "log_sink_pubsub" {
   filter      = var.logs_filter
 }
 
-# Grant Logging Service Account Permissions for BigQuery, Cloud Storage, and Pub/Sub
-# resource "google_service_account" "logging_sa" {
-#   account_id   = "logging-sa"
-#   display_name = "Logging Service Account"
-# }
-
-resource "google_project_iam_binding" "bigquery_log_writer" {
+# Write permissions
+resource "google_project_iam_member" "bigquery_log_writer" {
   project = var.project
   role    = "roles/bigquery.dataEditor"
-  members = [
-    "serviceAccount:logging-sa@log-exporter-436111.iam.gserviceaccount.com",
-    # "serviceAccount:${google_logging_project_sink.log_sink_bigquery.writer_identity}",
-  ]
+  member = "${google_logging_project_sink.log_sink_bigquery.writer_identity}"
 }
 
-resource "google_project_iam_binding" "storage_log_writer" {
+resource "google_project_iam_member" "storage_log_writer" {
   project = var.project
   role    = "roles/storage.objectCreator"
-  members = [
-    "serviceAccount:logging-sa@log-exporter-436111.iam.gserviceaccount.com",
-    # "serviceAccount:${google_logging_project_sink.log_sink_storage.writer_identity}",
-  ]
+  member = "${google_logging_project_sink.log_sink_storage.writer_identity}"
 }
 
-resource "google_project_iam_binding" "pubsub_log_writer" {
+resource "google_project_iam_member" "pubsub_log_writer" {
   project = var.project 
   role    = "roles/pubsub.publisher"
-  members = [
-    "serviceAccount:logging-sa@log-exporter-436111.iam.gserviceaccount.com",
-    # "serviceAccount:${google_logging_project_sink.log_sink_pubsub.writer_identity}",
-  ]
+  member = "${google_logging_project_sink.log_sink_pubsub.writer_identity}"
 }
